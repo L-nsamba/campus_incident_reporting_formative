@@ -1,4 +1,5 @@
 import 'package:campus_reporting_app/enum/user_role_enum.dart';
+import 'package:campus_reporting_app/utils/date_time_parser_helper.dart';
 
 class AppUser {
   final String uid;
@@ -27,10 +28,11 @@ class AppUser {
         (role) => role.name == map['role'],
         orElse: () => UserRoleEnum.student,
       ),
-      createdAt: (map['createdAt'] as dynamic).toDate(),
-      updatedAt: map['updatedAt'] == null
-          ? null
-          : (map['updatedAt'] as dynamic).toDate(),
+      createdAt: parseFirestoreDate(
+        map['createdAt'],
+        fallback: DateTime.now(),
+      )!,
+      updatedAt: parseFirestoreDate(map['updatedAt']),
     );
   }
 
