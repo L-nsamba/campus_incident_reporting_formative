@@ -1,0 +1,168 @@
+import 'dart:async';
+
+import 'package:campus_reporting_app/enum/user_role_enum.dart';
+import 'package:campus_reporting_app/models/app_user.dart';
+import 'package:campus_reporting_app/services/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
+
+class AuthProvider extends ChangeNotifier {
+  final AuthService _authService;
+
+  // Setting up the central auth state manager that listens and reacts to user sign in's and out's
+  AuthProvider(this._authService) {
+    _authSubscription = _authService.authStateChanges.listen(
+      _onAuthStateChanged,
+    );
+  }
+
+  User? _firebaseUser;
+  AppUser? _appUser;
+
+  bool _isLoading = false;
+  String? _errorMessage;
+
+  StreamSubscription<User?>? _authSubscription;
+
+  User? get firebaseUser => _firebaseUser;
+  AppUser? get appUser => _appUser;
+
+  bool get isLoading => _isLoading;
+  String? get errorMessage => _errorMessage;
+
+  bool get isAuthenticated =>
+      _firebaseUser != null && _firebaseUser!.emailVerified;
+
+  bool get isEmailVerified => _firebaseUser?.emailVerified ?? false;
+
+  bool get isStudent => _appUser?.role == UserRoleEnum.student;
+
+  bool get isStaff => _appUser?.role == UserRoleEnum.staff;
+
+  // Handling Firebase authentication changes
+  Future<void> _onAuthStateChanged(User? user) async {
+    _firebaseUser = user;
+    _appUser = null;
+
+    if (user == null) {
+      notifyListeners();
+      return;
+    }
+
+    try {
+      await user.reload();
+
+      final refreshedUser = FirebaseAuth.instance.currentUser;
+      _firebaseUser = refreshedUser;
+
+      if (refreshedUser != null && refreshedUser.emailVerified) {
+        _appUser = await _authService.getUserProfile(refreshedUser.uid);
+      }
+    } catch (e) {
+      _errorMessage = 'Unable to load your account profile: $e';
+    }
+
+    notifyListeners();
+  }
+
+  // Registering a student
+  Future<bool> register({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    _setLoading(true);
+
+    try {
+      await _authService.registerStudent(
+        name: name,
+        email: email,
+        password: password,
+      );
+
+      _errorMessage = null;
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  // Login
+  Future<bool> login({required String email, required String password}) async {
+    _setLoading(true);
+
+    try {
+      await _authService.login(email: email, password: password);
+      _errorMessage = null;
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  // Resending verification email
+  Future<bool> resendVerificationEmail() async {
+    try {
+      await _authService.resendVerificationEmail();
+      _errorMessage = null;
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  // Refreshing verification status after user returns to the app
+  Future<void> refreshUser() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) return;
+
+    await user.reload();
+    _firebaseUser = FirebaseAuth.instance.currentUser;
+
+    if (_firebaseUser?.emailVerified == true) {
+      _appUser = await _authService.getUserProfile(_firebaseUser!.uid);
+    }
+
+    notifyListeners();
+  }
+
+  // Logging out
+  Future<void> logout() async {
+    _setLoading(true);
+
+    try {
+      await _authService.logout();
+      _errorMessage = null;
+    } catch (e) {
+      _errorMessage = e.toString();
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  void clearError() {
+    _errorMessage = null;
+    notifyListeners();
+  }
+
+  void _setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _authSubscription?.cancel();
+    super.dispose();
+  }
+}
