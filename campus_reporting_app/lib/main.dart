@@ -1,3 +1,4 @@
+import 'package:campus_reporting_app/app.dart';
 import 'package:campus_reporting_app/providers/auth_provider.dart';
 import 'package:campus_reporting_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -20,31 +21,7 @@ Future<void> main() async {
           create: (context) => AuthProvider(context.read<AuthService>()),
         ),
       ],
-      child: const MyApp(),
+      child: const CampusIncidentApp(),
     ),
   );
-}
-
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Campus Incident Reporting',
-      home: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text('Campus Reporting App'),
-          backgroundColor: Colors.grey,
-        ),
-      ),
-    );
-  }
 }
