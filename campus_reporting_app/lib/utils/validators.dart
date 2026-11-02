@@ -12,7 +12,7 @@ class Validators {
     return null;
   }
 
-  // Email validation
+  // Registration email validation
   static String? validateEmail(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'Please enter your ALU email address';
@@ -22,6 +22,19 @@ class Validators {
 
     if (!RegExp(r'^[^@\s]+@alustudent\.com$').hasMatch(email)) {
       return 'Please use your @alustudent.com email';
+    }
+
+    return null;
+  }
+
+  // Login email validation
+  static String? validateLoginEmail(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Please enter your email address';
+    }
+
+    if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(value.trim())) {
+      return 'Please enter a valid email address';
     }
 
     return null;
@@ -53,6 +66,14 @@ class Validators {
       return 'Passwords do not match';
     }
 
+    return null;
+  }
+
+  // Validate login password
+  static String? validateLoginPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your password';
+    }
     return null;
   }
 }
