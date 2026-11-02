@@ -44,10 +44,6 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (!mounted) return;
-
-      // Temporary route role-based route navigation
-      // Home destination eventually controlled by the authentication router
-      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
     } catch (e) {
       if (!mounted) return;
 
@@ -73,36 +69,21 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 30),
-
                   Center(
-                    child: Container(
-                      height: 85,
-                      width: 85,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryLight,
-                        borderRadius: BorderRadius.circular(22),
-                      ),
-                      child: const Icon(
-                        Icons.campaign_outlined,
-                        color: AppColors.primary,
-                        size: 45,
-                      ),
+                    child: Text(
+                      'Welcome Back',
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
-                  ),
-                  const SizedBox(height: 32),
-
-                  Text(
-                    'Welcome Back',
-                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
 
                   const SizedBox(height: 8),
 
-                  Text(
-                    'Sign in to report and track campus incidents.',
-                    style: Theme.of(context).textTheme.bodyMedium
-                        ?.copyWith(color: AppColors.textSecondary),
+                  Center(
+                    child: Text(
+                      'Sign in to report and track campus incidents.',
+                      style: Theme.of(context).textTheme.bodyMedium
+                          ?.copyWith(color: AppColors.textSecondary),
+                    ),
                   ),
                   const SizedBox(height: 32),
 

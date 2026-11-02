@@ -1,3 +1,4 @@
+import 'package:campus_reporting_app/app/router/route_names.dart';
 import 'package:campus_reporting_app/core/theme/app_colors.dart';
 import 'package:campus_reporting_app/providers/auth_provider.dart';
 import 'package:campus_reporting_app/utils/validators.dart';
@@ -97,7 +98,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             'a password reset link will be sent.'
                             'Check your inbox.'
                       : 'Enter the email address associated with'
-                            'your account and we will send you a '
+                            ' your account and we will send you a '
                             'password reset link',
                   style: Theme.of(context).textTheme.bodyMedium
                       ?.copyWith(color: AppColors.textSecondary),
@@ -145,7 +146,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   PrimaryButton(
                     label: 'Back to Login',
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pushNamed(context, RouteNames.forgotPassword);
                     },
                   ),
 

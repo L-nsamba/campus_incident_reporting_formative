@@ -1,3 +1,4 @@
+import 'package:campus_reporting_app/app/router/route_names.dart';
 import 'package:campus_reporting_app/core/theme/app_colors.dart';
 import 'package:campus_reporting_app/providers/auth_provider.dart';
 import 'package:campus_reporting_app/utils/validators.dart';
@@ -50,7 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (!mounted) return;
 
-      Navigator.pushNamed(context, '/email-verification');
+      Navigator.pushNamed(context, RouteNames.emailVerification);
     } catch (e) {
       if (!mounted) return;
 
@@ -75,7 +76,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 20),
 
                 Text(
-                  'Join the incident reporting application',
+                  'Join us in tracking campus incidents',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
 
@@ -167,7 +168,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const Text('Already have an account? '),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacementNamed(context, '/login');
+                          Navigator.pushNamed(context, RouteNames.login);
                         },
 
                         child: const Text(

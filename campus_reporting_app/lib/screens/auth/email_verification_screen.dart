@@ -35,7 +35,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       if (!mounted) return;
 
       if (authProvider.isEmailVerified) {
-        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+        Navigator.popUntil(context, (route) => route.isFirst);
       } else {
         setState(() {
           _message =
