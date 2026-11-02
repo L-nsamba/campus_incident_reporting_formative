@@ -93,6 +93,26 @@ class AuthService {
     }
   }
 
+  // Password Reset
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email.trim().toLowerCase());
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'invalid-email':
+          throw Exception('Please enter a valid email address.');
+        case 'user-not-found':
+          throw Exception('No account was found with this email.');
+        case 'too-many-requests':
+          throw Exception('Too many attempts. Please try again later.');
+        default:
+          throw Exception(e.message ?? 'Unable to send password reset email.');
+      }
+    } catch (e) {
+      throw Exception('Something went wrong. Please try again.');
+    }
+  }
+
   // Signing out
   Future<void> logout() async {
     await _auth.signOut();

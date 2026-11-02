@@ -27,7 +27,7 @@ class Validators {
     return null;
   }
 
-  // Login email validation
+  // Login and forgot password email validation
   static String? validateLoginEmail(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'Please enter your email address';
