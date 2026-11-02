@@ -20,6 +20,8 @@ class AuthProvider extends ChangeNotifier {
   AppUser? _appUser;
 
   bool _isLoading = false;
+  bool _isInitializing = true;
+
   String? _errorMessage;
 
   StreamSubscription<User?>? _authSubscription;
@@ -27,11 +29,11 @@ class AuthProvider extends ChangeNotifier {
   User? get firebaseUser => _firebaseUser;
   AppUser? get appUser => _appUser;
 
-  bool get isLoading => _isLoading;
+  bool get isLoading => _isLoading || _isInitializing;
   String? get errorMessage => _errorMessage;
 
   bool get isAuthenticated =>
-      _firebaseUser != null && _firebaseUser!.emailVerified;
+      _firebaseUser != null && _firebaseUser!.emailVerified && _appUser != null;
 
   bool get isEmailVerified => _firebaseUser?.emailVerified ?? false;
 
@@ -43,8 +45,10 @@ class AuthProvider extends ChangeNotifier {
   Future<void> _onAuthStateChanged(User? user) async {
     _firebaseUser = user;
     _appUser = null;
+    _errorMessage = null;
 
     if (user == null) {
+      _isInitializing = false;
       notifyListeners();
       return;
     }
@@ -52,17 +56,18 @@ class AuthProvider extends ChangeNotifier {
     try {
       await user.reload();
 
-      final refreshedUser = FirebaseAuth.instance.currentUser;
+      final refreshedUser = _authService.currentFirebaseUser;
       _firebaseUser = refreshedUser;
 
       if (refreshedUser != null && refreshedUser.emailVerified) {
         _appUser = await _authService.getUserProfile(refreshedUser.uid);
       }
     } catch (e) {
-      _errorMessage = 'Unable to load your account profile: $e';
+      _errorMessage = 'Unable to load your account profile.';
+    } finally {
+      _isInitializing = false;
+      notifyListeners();
     }
-
-    notifyListeners();
   }
 
   // Registering a student
@@ -121,19 +126,34 @@ class AuthProvider extends ChangeNotifier {
   }
 
   // Refreshing verification status after user returns to the app
+
   Future<void> refreshUser() async {
-    final user = FirebaseAuth.instance.currentUser;
+    final user = _authService.currentFirebaseUser;
 
-    if (user == null) return;
-
-    await user.reload();
-    _firebaseUser = FirebaseAuth.instance.currentUser;
-
-    if (_firebaseUser?.emailVerified == true) {
-      _appUser = await _authService.getUserProfile(_firebaseUser!.uid);
+    if (user == null) {
+      _firebaseUser = null;
+      _appUser = null;
+      notifyListeners();
+      return;
     }
 
-    notifyListeners();
+    try {
+      await user.reload();
+
+      _firebaseUser = _authService.currentFirebaseUser;
+      _appUser = null;
+
+      if (_firebaseUser?.emailVerified == true) {
+        _appUser = await _authService.getUserProfile(_firebaseUser!.uid);
+      }
+
+      _errorMessage = null;
+    } catch (e) {
+      _errorMessage = 'Unable to refresh your account information.';
+      rethrow;
+    } finally {
+      notifyListeners();
+    }
   }
 
   // Password Reset

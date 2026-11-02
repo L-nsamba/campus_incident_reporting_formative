@@ -1,3 +1,6 @@
+import 'package:campus_reporting_app/app/router/app_router.dart';
+import 'package:campus_reporting_app/app/router/auth_gate.dart';
+import 'package:campus_reporting_app/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class CampusIncidentApp extends StatefulWidget {
@@ -11,15 +14,13 @@ class _CampusIncidentAppState extends State<CampusIncidentApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Campus Incident Reporting',
-      home: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text('Campus Reporting App'),
-          backgroundColor: Colors.grey,
-        ),
-      ),
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+
+      home: const AuthGate(),
+
+      onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }
 }
