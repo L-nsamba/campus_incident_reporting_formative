@@ -53,7 +53,8 @@ class IncidentProvider extends ChangeNotifier {
         notifyListeners();
       },
       onError: (error) {
-        _errorMessage = 'Unable to load campus incidents';
+        _allIncidentsSubscription = null;
+        _errorMessage = 'Unable to load campus incidents.';
         _isLoadingIncidents = false;
         notifyListeners();
       },
@@ -131,5 +132,15 @@ class IncidentProvider extends ChangeNotifier {
   void clearError() {
     _errorMessage = null;
     notifyListeners();
+  }
+
+  Future<void> retryAllIncidents() async {
+    await _allIncidentsSubscription?.cancel();
+    _allIncidentsSubscription = null;
+
+    _incidents = [];
+    _errorMessage = null;
+
+    listenToAllIncidents();
   }
 }
