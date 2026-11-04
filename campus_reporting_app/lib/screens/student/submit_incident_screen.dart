@@ -144,7 +144,15 @@ class _SubmitIncidentScreenState extends State<SubmitIncidentScreen> {
         const SnackBar(content: Text('Incident submitted successfully!')),
       );
 
-      Navigator.pop(context);
+      setState(() {
+        _titleController.clear();
+        _descriptionController.clear();
+        _specificLocationController.clear();
+
+        _selectedCategory = null;
+        _selectedLocation = null;
+        _selectedImage = null;
+      });
     } catch (e) {
       if (!mounted) return;
 
@@ -183,7 +191,7 @@ class _SubmitIncidentScreenState extends State<SubmitIncidentScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 28),
+                const SizedBox(height: 8),
 
                 CustomTextField(
                   label: '',
@@ -257,13 +265,6 @@ class _SubmitIncidentScreenState extends State<SubmitIncidentScreen> {
                 ),
 
                 const SizedBox(height: 24),
-
-                const Text(
-                  'Image attachment (Optional)',
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-                ),
-
-                const SizedBox(height: 10),
 
                 ImagePickerWidget(
                   onImageSelected: (image) {
