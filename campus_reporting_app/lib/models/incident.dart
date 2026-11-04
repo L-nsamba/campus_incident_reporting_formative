@@ -8,7 +8,7 @@ class Incident {
   final String description;
   final IncidentCategoryEnum category;
   final String location; // Stores the final specific location entered
-  final String? phototUrl;
+  final String? photoUrl;
   final IncidentStatusEnum status;
   final DateTime createdAt;
   final DateTime? updatedAt;
@@ -20,7 +20,7 @@ class Incident {
     required this.description,
     required this.category,
     required this.location,
-    this.phototUrl,
+    this.photoUrl,
     required this.status,
     required this.createdAt,
     this.updatedAt,
@@ -38,7 +38,7 @@ class Incident {
         orElse: () => IncidentCategoryEnum.other,
       ),
       location: map['location'] as String,
-      phototUrl: map['photoUrl'] as String?,
+      photoUrl: map['photoUrl'] as String?,
       status: IncidentStatusEnum.values.firstWhere(
         (value) => value.name == map['status'],
         orElse: () => IncidentStatusEnum.submitted,
@@ -58,7 +58,7 @@ class Incident {
       'description': description,
       'category': category.name,
       'location': location,
-      'photoUrl': phototUrl,
+      'photoUrl': photoUrl,
       'status': status.name,
       'createdAt': createdAt,
       'updatedAt': updatedAt,

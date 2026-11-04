@@ -76,4 +76,12 @@ class Validators {
     }
     return null;
   }
+
+  // Incident Validator
+  static String? validateIncident(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Please enter an incident title';
+    }
+    return null;
+  }
 }

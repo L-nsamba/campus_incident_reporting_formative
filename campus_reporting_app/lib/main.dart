@@ -3,6 +3,7 @@ import 'package:campus_reporting_app/providers/auth_provider.dart';
 import 'package:campus_reporting_app/providers/incident_provider.dart';
 import 'package:campus_reporting_app/repositories/incident_repository.dart';
 import 'package:campus_reporting_app/services/auth_service.dart';
+import 'package:campus_reporting_app/services/cloudinary_service.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -29,6 +30,9 @@ Future<void> main() async {
           create: (context) =>
               IncidentProvider(context.read<IncidentRepository>()),
         ),
+
+        // Cloudinary service
+        Provider(create: (_) => CloudinaryService()),
       ],
       child: const CampusIncidentApp(),
     ),
