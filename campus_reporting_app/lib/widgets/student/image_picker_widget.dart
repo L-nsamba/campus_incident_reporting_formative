@@ -7,13 +7,17 @@ import 'package:image_picker/image_picker.dart';
 class ImagePickerWidget extends StatefulWidget {
   final ValueChanged<File?> onImageSelected;
 
-  const ImagePickerWidget({super.key, required this.onImageSelected, File? selectedImage});
+  const ImagePickerWidget({
+    super.key,
+    required this.onImageSelected,
+    File? selectedImage,
+  });
 
   @override
-  State<ImagePickerWidget> createState() => _ImagePickerWidgetState();
+  ImagePickerWidgetState createState() => ImagePickerWidgetState();
 }
 
-class _ImagePickerWidgetState extends State<ImagePickerWidget> {
+class ImagePickerWidgetState extends State<ImagePickerWidget> {
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
 
@@ -48,6 +52,14 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   }
 
   void _removeImage() {
+    setState(() {
+      _selectedImage = null;
+    });
+
+    widget.onImageSelected(null);
+  }
+
+  void clearImage() {
     setState(() {
       _selectedImage = null;
     });

@@ -2,7 +2,7 @@ import 'package:campus_reporting_app/providers/auth_provider.dart';
 import 'package:campus_reporting_app/screens/auth/email_verification_screen.dart';
 import 'package:campus_reporting_app/screens/auth/login_screen.dart';
 import 'package:campus_reporting_app/screens/staff/staff_home_screen.dart';
-import 'package:campus_reporting_app/screens/student/student_home_screen.dart';
+import 'package:campus_reporting_app/screens/student/student_navigation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +35,7 @@ class AuthGate extends StatelessWidget {
 
     // Direct the user according to their Firestone role
     if (authProvider.isStudent) {
-      return const StudentHomeScreen();
+      return const StudentNavigationScreen();
     }
 
     if (authProvider.isStaff) {

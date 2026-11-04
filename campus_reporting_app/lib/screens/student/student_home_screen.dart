@@ -12,7 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class StudentHomeScreen extends StatefulWidget {
-  const StudentHomeScreen({super.key});
+  final VoidCallback onSubmitPressed;
+  const StudentHomeScreen({super.key, required this.onSubmitPressed});
 
   @override
   State<StudentHomeScreen> createState() => _StudentHomeScreenState();
@@ -33,8 +34,6 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
       context.read<IncidentProvider>().listenToAllIncidents();
     });
   }
-
-  void _openSubmitTab() {}
 
   // Handling the searching and filtering
   List<Incident> _filterIncidents(List<Incident> incidents) {
@@ -87,7 +86,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
     }
 
     if (provider.incidents.isEmpty) {
-      return EmptyIncidentsState(onReportPressed: _openSubmitTab);
+      return EmptyIncidentsState(onReportPressed: widget.onSubmitPressed);
     }
 
     final filteredIncidents = _filterIncidents(provider.incidents);
@@ -139,8 +138,7 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
 
               const SizedBox(height: 20),
 
-              ReportBanner(onReportPressed: _openSubmitTab),
-
+              ReportBanner(onReportPressed: widget.onSubmitPressed),
               const SizedBox(height: 18),
 
               IncidentSearchBar(

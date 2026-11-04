@@ -15,11 +15,23 @@ class StudentNavigationScreen extends StatefulWidget {
 class _StudentNavigationScreenState extends State<StudentNavigationScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [
-    StudentHomeScreen(),
-    SubmitIncidentScreen(),
-    StudentMyReportsScreen(),
-    StudentProfileScreen(),
+  void _openSubmitTab() {
+    setState(() {
+      _currentIndex = 1;
+    });
+  }
+
+  void _onIncidentSubmitted() {
+    setState(() {
+      _currentIndex = 2;
+    });
+  }
+
+  late final List<Widget> _screens = [
+    StudentHomeScreen(onSubmitPressed: _openSubmitTab),
+    SubmitIncidentScreen(onIncidentSubmitted: _onIncidentSubmitted),
+    const StudentMyReportsScreen(),
+    const StudentProfileScreen(),
   ];
 
   @override

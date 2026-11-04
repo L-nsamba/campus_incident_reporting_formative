@@ -16,7 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SubmitIncidentScreen extends StatefulWidget {
-  const SubmitIncidentScreen({super.key});
+  final VoidCallback onIncidentSubmitted;
+  const SubmitIncidentScreen({super.key, required this.onIncidentSubmitted});
 
   @override
   State<SubmitIncidentScreen> createState() => _SubmitIncidentScreenState();
@@ -26,6 +27,8 @@ class _SubmitIncidentScreenState extends State<SubmitIncidentScreen> {
   final _formKey = GlobalKey<FormState>();
   File? _selectedImage;
   bool _isSubmitting = false;
+  final GlobalKey<ImagePickerWidgetState> _imagePickerKey =
+      GlobalKey<ImagePickerWidgetState>();
 
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -152,7 +155,12 @@ class _SubmitIncidentScreenState extends State<SubmitIncidentScreen> {
         _selectedCategory = null;
         _selectedLocation = null;
         _selectedImage = null;
+
+        _imagePickerKey.currentState?.clearImage();
+        _formKey.currentState!.reset();
       });
+
+      widget.onIncidentSubmitted();
     } catch (e) {
       if (!mounted) return;
 
@@ -267,6 +275,7 @@ class _SubmitIncidentScreenState extends State<SubmitIncidentScreen> {
                 const SizedBox(height: 24),
 
                 ImagePickerWidget(
+                  key: _imagePickerKey,
                   onImageSelected: (image) {
                     setState(() {
                       _selectedImage = image;
