@@ -7,6 +7,11 @@ import 'package:flutter/material.dart';
 // Connecting the incident repository to the screens
 class IncidentProvider extends ChangeNotifier {
   final IncidentRepository _incidentRepository;
+  String? _incidentsError;
+  String? _myIncidentsError;
+
+  String? get incidentsError => _incidentsError;
+  String? get myIncidentsError => _myIncidentsError;
 
   IncidentProvider(this._incidentRepository);
 
@@ -44,6 +49,8 @@ class IncidentProvider extends ChangeNotifier {
 
     _isLoadingIncidents = true;
     _errorMessage = null;
+    _incidentsError = null;
+
     notifyListeners();
 
     _allIncidentsSubscription = _incidentRepository.getAllIncidents().listen(
@@ -52,9 +59,10 @@ class IncidentProvider extends ChangeNotifier {
         _isLoadingIncidents = false;
         notifyListeners();
       },
-      onError: (error) {
+      onError: (error, stack) {
+        debugPrint('All incidents stream error: $error\n$stack');
         _allIncidentsSubscription = null;
-        _errorMessage = 'Unable to load campus incidents.';
+        _incidentsError = 'Unable to load campus incidents.';
         _isLoadingIncidents = false;
         notifyListeners();
       },
@@ -71,6 +79,7 @@ class IncidentProvider extends ChangeNotifier {
     _myIncidentsSubscription?.cancel();
     _myIncidentsSubscription = null;
     _listeningUserId = userId;
+    _myIncidentsError = null;
 
     if (userId.isEmpty) {
       _errorMessage = 'Unable to identify the current user';
@@ -87,12 +96,14 @@ class IncidentProvider extends ChangeNotifier {
         .listen(
           (incidents) {
             _myIncidents = incidents;
-            _isLoadingIncidents = false;
+            _isLoadingMyIncidents = false;
             notifyListeners();
           },
-          onError: (error) {
-            _errorMessage = 'Unable to load your reports';
-            _isLoadingIncidents = false;
+          onError: (error, stack) {
+            debugPrint('My incidents stream error: $error\n$stack');
+            _myIncidentsSubscription = null;
+            _myIncidentsError = 'Unable to load your reports';
+            _isLoadingMyIncidents = false; 
             notifyListeners();
           },
         );
