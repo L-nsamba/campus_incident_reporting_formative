@@ -1,9 +1,11 @@
 import 'package:campus_reporting_app/core/theme/app_colors.dart';
 import 'package:campus_reporting_app/models/app_user.dart';
 import 'package:campus_reporting_app/models/incident.dart';
+import 'package:campus_reporting_app/models/status_history.dart';
 import 'package:campus_reporting_app/providers/incident_provider.dart';
 import 'package:campus_reporting_app/repositories/user_repository.dart';
 import 'package:campus_reporting_app/widgets/status_badge.dart';
+import 'package:campus_reporting_app/widgets/status_history_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,9 +23,15 @@ class _IncidentDetailsScreenState extends State<IncidentDetailsScreen> {
 
   Future<AppUser?>? _reporterFuture;
 
+  Stream<List<StatusHistory>>? _historyStream;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    _historyStream ??= context.read<IncidentProvider>().getStatusHistory(
+      widget.incidentId,
+    );
 
     if (_reporterFuture == null) {
       final incidentProvider = context.read<IncidentProvider>();
@@ -131,7 +139,7 @@ class _IncidentDetailsScreenState extends State<IncidentDetailsScreen> {
                   Text(
                     incident.title,
                     style: const TextStyle(
-                      fontSize: 20,
+                      fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary,
                     ),
@@ -147,7 +155,7 @@ class _IncidentDetailsScreenState extends State<IncidentDetailsScreen> {
                           children: [
                             const Icon(
                               Icons.location_on_outlined,
-                              size: 17,
+                              size: 20,
                               color: AppColors.textSecondary,
                             ),
 
@@ -157,7 +165,7 @@ class _IncidentDetailsScreenState extends State<IncidentDetailsScreen> {
                               child: Text(
                                 incident.location,
                                 style: const TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 15,
                                   color: AppColors.textSecondary,
                                 ),
                               ),
@@ -181,7 +189,7 @@ class _IncidentDetailsScreenState extends State<IncidentDetailsScreen> {
                       return Text(
                         'Reported by: $reporterName',
                         style: const TextStyle(
-                          fontSize: 12,
+                          fontSize: 15,
                           color: AppColors.textSecondary,
                         ),
                       );
@@ -195,7 +203,7 @@ class _IncidentDetailsScreenState extends State<IncidentDetailsScreen> {
                         ? incident.description
                         : 'No description provided.',
                     style: const TextStyle(
-                      fontSize: 13,
+                      fontSize: 15,
                       height: 1.5,
                       color: AppColors.textPrimary,
                     ),
@@ -203,7 +211,29 @@ class _IncidentDetailsScreenState extends State<IncidentDetailsScreen> {
 
                   const SizedBox(height: 24),
 
-                  // Status history coming soon
+                  const Text(
+                    'Status History',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+
+                  const SizedBox(height: 18),
+
+                  StreamBuilder<List<StatusHistory>>(
+                    stream: _historyStream,
+                    builder: ((context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      if (snapshot.hasError) {
+                        return const Text('Unable to load status history');
+                      }
+
+                      return StatusHistoryTimeline(
+                        history: snapshot.data ?? [],
+                      );
+                    }),
+                  ),
                 ],
               ),
             );

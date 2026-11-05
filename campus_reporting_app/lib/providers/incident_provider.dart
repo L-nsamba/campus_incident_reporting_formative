@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:campus_reporting_app/models/incident.dart';
+import 'package:campus_reporting_app/models/status_history.dart';
 import 'package:campus_reporting_app/repositories/incident_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +23,9 @@ class IncidentProvider extends ChangeNotifier {
   // Stream subscriptions which handle a series of asynchronus events
   StreamSubscription<List<Incident>>? _allIncidentsSubscription;
   StreamSubscription<List<Incident>>? _myIncidentsSubscription;
+  Stream<List<StatusHistory>> getStatusHistory(String incidentId) {
+    return _incidentRepository.getStatusHistory(incidentId);
+  }
 
   // Loading states
   bool _isLoadingIncidents = false;
@@ -103,7 +107,7 @@ class IncidentProvider extends ChangeNotifier {
             debugPrint('My incidents stream error: $error\n$stack');
             _myIncidentsSubscription = null;
             _myIncidentsError = 'Unable to load your reports';
-            _isLoadingMyIncidents = false; 
+            _isLoadingMyIncidents = false;
             notifyListeners();
           },
         );

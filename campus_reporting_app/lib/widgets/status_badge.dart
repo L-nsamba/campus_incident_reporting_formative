@@ -20,19 +20,6 @@ class StatusBadge extends StatelessWidget {
     }
   }
 
-  String get statusLabel {
-    switch (status) {
-      case IncidentStatusEnum.submitted:
-        return 'Submitted';
-      case IncidentStatusEnum.inReview:
-        return 'In Review';
-      case IncidentStatusEnum.inProgress:
-        return 'In Progress';
-      case IncidentStatusEnum.resolved:
-        return 'Resolved';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,7 +29,7 @@ class StatusBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
-        statusLabel,
+        status.label,
         style: TextStyle(
           color: statusColor,
           fontSize: 11,

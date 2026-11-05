@@ -89,4 +89,19 @@ class IncidentRepository {
       throw Exception('Failed to retrieve incident: $e');
     }
   }
+
+  // Retrieving status history
+  Stream<List<StatusHistory>> getStatusHistory(String incidentId) {
+    return _firestore
+        .collection('incidents')
+        .doc(incidentId)
+        .collection('statusHistory')
+        .orderBy('createdAt', descending: false)
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs.map((doc) {
+            return StatusHistory.fromMap(doc.data(), doc.id);
+          }).toList();
+        });
+  }
 }
