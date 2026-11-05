@@ -2,6 +2,7 @@ import 'package:campus_reporting_app/enum/incident_category_enum.dart';
 import 'package:campus_reporting_app/models/incident.dart';
 import 'package:campus_reporting_app/providers/auth_provider.dart';
 import 'package:campus_reporting_app/providers/incident_provider.dart';
+import 'package:campus_reporting_app/screens/student/incident_details_screen.dart';
 import 'package:campus_reporting_app/widgets/incident_card.dart';
 import 'package:campus_reporting_app/widgets/student/category_filter_list.dart';
 import 'package:campus_reporting_app/widgets/student/empty_incidents_state.dart';
@@ -112,7 +113,14 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
         return IncidentCard(
           incident: incident,
           reporterName: 'Campus Member',
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => IncidentDetailsScreen(incidentId: incident.id),
+              ),
+            );
+          },
         );
       }),
       separatorBuilder: (_, _) => const SizedBox(height: 12),

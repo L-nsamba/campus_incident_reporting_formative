@@ -1,6 +1,7 @@
 import 'package:campus_reporting_app/core/theme/app_colors.dart';
 import 'package:campus_reporting_app/models/incident.dart';
 import 'package:campus_reporting_app/providers/incident_provider.dart';
+import 'package:campus_reporting_app/screens/student/incident_details_screen.dart';
 import 'package:campus_reporting_app/widgets/incident_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -147,9 +148,10 @@ class _StudentMyReportsScreenState extends State<StudentMyReportsScreen> {
           incident: incident,
           reporterName: userName,
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Incident details are coming next.'),
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => IncidentDetailsScreen(incidentId: incident.id),
               ),
             );
           },

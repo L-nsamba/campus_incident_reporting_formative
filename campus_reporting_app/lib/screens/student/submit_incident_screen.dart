@@ -58,25 +58,6 @@ class _SubmitIncidentScreenState extends State<SubmitIncidentScreen> {
     return null;
   }
 
-  String _categoryLabel(IncidentCategoryEnum category) {
-    switch (category) {
-      case IncidentCategoryEnum.facilities:
-        return 'Facilities';
-      case IncidentCategoryEnum.water:
-        return 'Water';
-      case IncidentCategoryEnum.electricity:
-        return 'Electricity';
-      case IncidentCategoryEnum.furniture:
-        return 'Furniture';
-      case IncidentCategoryEnum.sanitation:
-        return 'Sanitation';
-      case IncidentCategoryEnum.safety:
-        return 'Safety';
-      case IncidentCategoryEnum.other:
-        return 'Other';
-    }
-  }
-
   InputDecoration _dropdownDecoration(String hint) {
     return InputDecoration(
       hintText: hint,
@@ -215,7 +196,7 @@ class _SubmitIncidentScreenState extends State<SubmitIncidentScreen> {
                   items: IncidentCategoryEnum.values.map((category) {
                     return DropdownMenuItem(
                       value: category,
-                      child: Text(_categoryLabel(category)),
+                      child: Text(category.label),
                     );
                   }).toList(),
                   onChanged: (value) {
