@@ -11,25 +11,6 @@ class CategoryFilterList extends StatelessWidget {
     required this.onCategorySelected,
   });
 
-  String _categoryLabel(IncidentCategoryEnum category) {
-    switch (category) {
-      case IncidentCategoryEnum.facilities:
-        return 'Facilities';
-      case IncidentCategoryEnum.water:
-        return 'Water';
-      case IncidentCategoryEnum.electricity:
-        return 'Electricity';
-      case IncidentCategoryEnum.furniture:
-        return 'Furniture';
-      case IncidentCategoryEnum.sanitation:
-        return 'Sanitation';
-      case IncidentCategoryEnum.safety:
-        return 'Safety';
-      case IncidentCategoryEnum.other:
-        return 'Other';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -45,7 +26,7 @@ class CategoryFilterList extends StatelessWidget {
 
         ...IncidentCategoryEnum.values.map((category) {
           return _buildCategoryChip(
-            label: _categoryLabel(category),
+            label: category.label,
             isSelected: selectedCategory == category,
             onTap: () => onCategorySelected(category),
           );
