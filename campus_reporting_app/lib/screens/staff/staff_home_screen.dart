@@ -1,10 +1,8 @@
 import 'package:campus_reporting_app/enum/incident_category_enum.dart';
 import 'package:campus_reporting_app/providers/auth_provider.dart';
 import 'package:campus_reporting_app/providers/incident_provider.dart';
-import 'package:campus_reporting_app/screens/student/incident_details_screen.dart';
-import 'package:campus_reporting_app/utils/incident_filter.dart';
-import 'package:campus_reporting_app/widgets/incident_card.dart';
 import 'package:campus_reporting_app/widgets/staff/incident_banner.dart';
+import 'package:campus_reporting_app/widgets/staff/incident_feed.dart';
 import 'package:campus_reporting_app/widgets/student/category_filter_list.dart';
 import 'package:campus_reporting_app/widgets/student/incident_search_bar.dart';
 import 'package:campus_reporting_app/widgets/student/welcome_header.dart';
@@ -34,97 +32,9 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
     });
   }
 
-  Widget _buildIncidentFeed(IncidentProvider provider) {
-    if (provider.isLoadingIncidents) {
-      return const Padding(
-        padding: EdgeInsets.all(40),
-        child: Center(child: CircularProgressIndicator()),
-      );
-    }
-
-    if (provider.errorMessage != null) {
-      return Padding(
-        padding: const EdgeInsets.all(24),
-        child: Center(
-          child: Column(
-            children: [
-              const Icon(Icons.cloud_off_outlined, size: 42),
-              const SizedBox(height: 12),
-              const Text(
-                'Unable to load campus incidents.',
-                textAlign: TextAlign.center,
-              ),
-              TextButton(
-                onPressed: provider.retryAllIncidents,
-                child: const Text('Try again'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    if (provider.incidents.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 40),
-        child: Center(
-          child: Column(
-            children: [
-              Icon(Icons.inbox_outlined, size: 42),
-              SizedBox(height: 12),
-              Text('No campus reports yet.'),
-            ],
-          ),
-        ),
-      );
-    }
-
-    final filteredIncidents = filterIncidents(
-      provider.incidents,
-      category: _selectedCategory,
-      searchQuery: _searchQuery,
-    );
-
-    if (filteredIncidents.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 32),
-        child: Center(
-          child: Text(
-            'No incidents match your search or category.',
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    }
-
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: filteredIncidents.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 12),
-      itemBuilder: (context, index) {
-        final incident = filteredIncidents[index];
-
-        return IncidentCard(
-          incident: incident,
-          reporterName: 'Campus Member',
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => IncidentDetailsScreen(incidentId: incident.id),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
-    final incidentProvider = context.watch<IncidentProvider>();
 
     final staffName = authProvider.appUser?.name ?? 'Staff';
 
@@ -170,7 +80,22 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
 
               const SizedBox(height: 14),
 
-              _buildIncidentFeed(incidentProvider),
+              IncidentFeed(
+                category: _selectedCategory,
+                searchQuery: _searchQuery,
+                emptyState: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 40),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Icon(Icons.inbox_outlined, size: 42),
+                        SizedBox(height: 12),
+                        Text('No campus reports yet.'),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
