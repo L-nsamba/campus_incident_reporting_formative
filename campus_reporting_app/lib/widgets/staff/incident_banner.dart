@@ -21,7 +21,7 @@ class IncidentBanner extends StatelessWidget {
           ),
         ],
       ),
-      
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -45,7 +45,7 @@ class IncidentBanner extends StatelessWidget {
               backgroundColor: Colors.white,
               foregroundColor: Theme.of(context).colorScheme.primary,
             ),
-            child: const Text('View Dashboard'),
+            child: const Text('View all reports'),
           ),
         ],
       ),

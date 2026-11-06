@@ -37,7 +37,7 @@ class ReportBanner extends StatelessWidget {
           const SizedBox(height: 8),
 
           const Text(
-            'File a report adn track latest campus issues.',
+            'File a report and track latest campus issues.',
             style: TextStyle(color: Colors.white),
           ),
           const SizedBox(height: 14),
