@@ -10,8 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class StaffHomeScreen extends StatefulWidget {
-  final VoidCallback onDashboardPressed;
-  const StaffHomeScreen({super.key, required this.onDashboardPressed});
+  final VoidCallback onViewReportsPressed;
+  const StaffHomeScreen({super.key, required this.onViewReportsPressed});
 
   @override
   State<StaffHomeScreen> createState() => _StaffHomeScreenState();
@@ -49,7 +49,7 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
 
               const SizedBox(height: 20),
 
-              IncidentBanner(onDashboardPressed: widget.onDashboardPressed),
+              IncidentBanner(onDashboardPressed: widget.onViewReportsPressed),
 
               const SizedBox(height: 18),
 

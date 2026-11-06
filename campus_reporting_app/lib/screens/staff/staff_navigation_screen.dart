@@ -1,3 +1,4 @@
+import 'package:campus_reporting_app/screens/staff/staff_all_reports_screen.dart';
 import 'package:campus_reporting_app/screens/staff/staff_dashboard_screen.dart';
 import 'package:campus_reporting_app/screens/staff/staff_home_screen.dart';
 import 'package:campus_reporting_app/screens/staff/staff_profile_screen.dart';
@@ -15,10 +16,11 @@ class _StaffNavigationScreenState extends State<StaffNavigationScreen> {
 
   late final List<Widget> _screens = [
     StaffHomeScreen(
-      onDashboardPressed: () {
+      onViewReportsPressed: () {
         setState(() => _currentIndex = 1);
       },
     ),
+    const StaffAllReportsScreen(),
     const StaffDashboardScreen(),
     const StaffProfileScreen(),
   ];
@@ -44,6 +46,11 @@ class _StaffNavigationScreenState extends State<StaffNavigationScreen> {
             icon: Icon(Icons.home_outlined),
             activeIcon: Icon(Icons.home),
             label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.assignment_outlined),
+            activeIcon: Icon(Icons.assignment),
+            label: 'Reports',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.analytics_outlined),
