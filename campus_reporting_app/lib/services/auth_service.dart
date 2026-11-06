@@ -73,8 +73,14 @@ class AuthService {
     final user = credential.user!;
 
     if (!user.emailVerified) {
-      await _auth.signOut();
-      throw Exception('Please verify your email before logging in.');
+      final profile = await getUserProfile(user.uid);
+      final isStaff = profile?.role == UserRoleEnum.staff;
+
+      // Only staff are exempt from email verification
+      if (!isStaff) {
+        await _auth.signOut();
+        throw Exception('Please verify your email before logging in');
+      }
     }
 
     return credential;

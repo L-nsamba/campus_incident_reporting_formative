@@ -1,7 +1,7 @@
 import 'package:campus_reporting_app/providers/auth_provider.dart';
 import 'package:campus_reporting_app/screens/auth/email_verification_screen.dart';
 import 'package:campus_reporting_app/screens/auth/login_screen.dart';
-import 'package:campus_reporting_app/screens/staff/staff_home_screen.dart';
+import 'package:campus_reporting_app/screens/staff/staff_navigation_screen.dart';
 import 'package:campus_reporting_app/screens/student/student_navigation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,23 +23,41 @@ class AuthGate extends StatelessWidget {
       return const LoginScreen();
     }
 
-    // Signed in but email has not been verified
-    if (!authProvider.isEmailVerified) {
-      return const EmailVerificationScreen();
-    }
-
     // Verified user but profile not loaded
     if (authProvider.appUser == null) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                authProvider.errorMessage ??
+                    'No profile found for this account.',
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 12),
+              TextButton(
+                onPressed: () => authProvider.logout(),
+                child: const Text('Sign out'),
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
-    // Direct the user according to their Firestone role
-    if (authProvider.isStudent) {
-      return const StudentNavigationScreen();
-    }
-
+    // The test dummy staff exempted from verification
     if (authProvider.isStaff) {
-      return const StaffHomeScreen();
+      return const StaffNavigationScreen();
+    }
+
+    // Students must verify their email
+    if (authProvider.isStudent) {
+      if (!authProvider.isEmailVerified) {
+        return const EmailVerificationScreen();
+      }
+
+      return const StudentNavigationScreen();
     }
 
     return const Scaffold(

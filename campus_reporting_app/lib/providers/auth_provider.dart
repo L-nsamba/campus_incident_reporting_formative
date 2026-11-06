@@ -33,7 +33,9 @@ class AuthProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
 
   bool get isAuthenticated =>
-      _firebaseUser != null && _firebaseUser!.emailVerified && _appUser != null;
+      _firebaseUser != null &&
+      _appUser != null &&
+      (isStaff || _firebaseUser!.emailVerified);
 
   bool get isEmailVerified => _firebaseUser?.emailVerified ?? false;
 
@@ -59,10 +61,12 @@ class AuthProvider extends ChangeNotifier {
       final refreshedUser = _authService.currentFirebaseUser;
       _firebaseUser = refreshedUser;
 
-      if (refreshedUser != null && refreshedUser.emailVerified) {
+      // Fetching the profile regardless of email verification to cater for staff exemption
+      if (refreshedUser != null) {
         _appUser = await _authService.getUserProfile(refreshedUser.uid);
       }
-    } catch (e) {
+    } catch (e, stack) {
+      debugPrint('Auth profile load error: $e\n$stack');
       _errorMessage = 'Unable to load your account profile.';
     } finally {
       _isInitializing = false;
@@ -143,10 +147,9 @@ class AuthProvider extends ChangeNotifier {
       _firebaseUser = _authService.currentFirebaseUser;
       _appUser = null;
 
-      if (_firebaseUser?.emailVerified == true) {
+      if (_firebaseUser != null) {
         _appUser = await _authService.getUserProfile(_firebaseUser!.uid);
       }
-
       _errorMessage = null;
     } catch (e) {
       _errorMessage = 'Unable to refresh your account information.';
