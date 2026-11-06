@@ -9,15 +9,15 @@ class ReportBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: AppColors.primary,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.15),
-            blurRadius: 12,
-            offset: const Offset(0, 5),
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -26,28 +26,28 @@ class ReportBanner extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Easing your issue \nreporting on campus \ntoday!',
+            'Easing your issue reporting on campus today!',
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
-              height: 1.5,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.bold,
             ),
           ),
 
-          const SizedBox(height: 18),
+          const SizedBox(height: 8),
 
-          OutlinedButton(
+          const Text(
+            'File a report adn track latest campus issues.',
+            style: TextStyle(color: Colors.white),
+          ),
+          const SizedBox(height: 14),
+          ElevatedButton(
             onPressed: onReportPressed,
-            style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.white.withValues(alpha: 0.2),
-              side: BorderSide(color: Colors.white.withValues(alpha: 0.4)),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(9),
-              ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: Theme.of(context).colorScheme.primary,
             ),
-            child: const Text('Report Issue'),
+            child: const Text('Create Report'),
           ),
         ],
       ),
