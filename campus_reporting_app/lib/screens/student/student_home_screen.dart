@@ -1,8 +1,8 @@
 import 'package:campus_reporting_app/enum/incident_category_enum.dart';
-import 'package:campus_reporting_app/models/incident.dart';
 import 'package:campus_reporting_app/providers/auth_provider.dart';
 import 'package:campus_reporting_app/providers/incident_provider.dart';
 import 'package:campus_reporting_app/screens/student/incident_details_screen.dart';
+import 'package:campus_reporting_app/utils/incident_filter.dart';
 import 'package:campus_reporting_app/widgets/incident_card.dart';
 import 'package:campus_reporting_app/widgets/student/category_filter_list.dart';
 import 'package:campus_reporting_app/widgets/student/empty_incidents_state.dart';
@@ -34,24 +34,6 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
 
       context.read<IncidentProvider>().listenToAllIncidents();
     });
-  }
-
-  // Handling the searching and filtering
-  List<Incident> _filterIncidents(List<Incident> incidents) {
-    return incidents.where((incident) {
-      final matchesCategory =
-          _selectedCategory == null || incident.category == _selectedCategory;
-
-      final query = _searchQuery.trim().toLowerCase();
-
-      final matchesSearch =
-          query.isEmpty ||
-          incident.title.toLowerCase().contains(query) ||
-          incident.description.toLowerCase().contains(query) ||
-          incident.location.toLowerCase().contains(query);
-
-      return matchesCategory && matchesSearch;
-    }).toList();
   }
 
   Widget _buildIncidentFeed(IncidentProvider provider) {
@@ -90,7 +72,12 @@ class _StudentHomeScreenState extends State<StudentHomeScreen> {
       return EmptyIncidentsState(onReportPressed: widget.onSubmitPressed);
     }
 
-    final filteredIncidents = _filterIncidents(provider.incidents);
+    // Handling filtering and searching
+    final filteredIncidents = filterIncidents(
+      provider.incidents,
+      category: _selectedCategory,
+      searchQuery: _searchQuery,
+    );
 
     if (filteredIncidents.isEmpty) {
       return const Padding(
