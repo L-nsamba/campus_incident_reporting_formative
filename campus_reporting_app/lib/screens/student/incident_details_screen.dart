@@ -1,9 +1,12 @@
 import 'package:campus_reporting_app/core/theme/app_colors.dart';
+import 'package:campus_reporting_app/enum/incident_status_enum.dart';
 import 'package:campus_reporting_app/models/app_user.dart';
 import 'package:campus_reporting_app/models/incident.dart';
 import 'package:campus_reporting_app/models/status_history.dart';
+import 'package:campus_reporting_app/providers/auth_provider.dart';
 import 'package:campus_reporting_app/providers/incident_provider.dart';
 import 'package:campus_reporting_app/repositories/user_repository.dart';
+import 'package:campus_reporting_app/widgets/staff/build_staff_details.dart';
 import 'package:campus_reporting_app/widgets/status_badge.dart';
 import 'package:campus_reporting_app/widgets/status_history_timeline.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +27,11 @@ class _IncidentDetailsScreenState extends State<IncidentDetailsScreen> {
   Future<AppUser?>? _reporterFuture;
 
   Stream<List<StatusHistory>>? _historyStream;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {
@@ -50,6 +58,50 @@ class _IncidentDetailsScreenState extends State<IncidentDetailsScreen> {
     if (incident == null) return null;
 
     return userRepository.getUserById(incident.reporterId);
+  }
+
+  Future<void> _updateStatus(
+    Incident incident,
+    IncidentStatusEnum status,
+    String note,
+  ) async {
+    final authProvider = context.read<AuthProvider>();
+    final incidentProvider = context.read<IncidentProvider>();
+
+    final staffUid = authProvider.firebaseUser?.uid;
+
+    if (staffUid == null) return;
+
+    try {
+      await incidentProvider.updateIncidentStatus(
+        incidentId: incident.id,
+        newStatus: status,
+        updatedBy: staffUid,
+        note: note.isEmpty ? null : note,
+      );
+
+      if (!mounted) return;
+
+      setState(() {
+        _incidentFuture = incidentProvider.getIncidentById(widget.incidentId);
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Incident status updated successfully.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to update status: $e'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+    }
   }
 
   @override
@@ -210,6 +262,15 @@ class _IncidentDetailsScreenState extends State<IncidentDetailsScreen> {
                   ),
 
                   const SizedBox(height: 24),
+
+                  if (context.read<AuthProvider>().isStaff) ...[
+                    StaffStatusSection(
+                      incident: incident,
+                      onUpdate: (status, note) =>
+                          _updateStatus(incident, status, note),
+                    ),
+                    const SizedBox(height: 24),
+                  ],
 
                   const Text(
                     'Status History',

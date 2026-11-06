@@ -1,8 +1,6 @@
 import 'package:campus_reporting_app/core/theme/app_colors.dart';
-import 'package:campus_reporting_app/models/incident.dart';
 import 'package:campus_reporting_app/providers/incident_provider.dart';
-import 'package:campus_reporting_app/screens/student/incident_details_screen.dart';
-import 'package:campus_reporting_app/widgets/incident_card.dart';
+import 'package:campus_reporting_app/widgets/build_report.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,8 +32,6 @@ class _StudentMyReportsScreenState extends State<StudentMyReportsScreen> {
   Widget build(BuildContext context) {
     final incidentProvider = context.watch<IncidentProvider>();
 
-    final incidents = incidentProvider.myIncidents;
-
     final userName = FirebaseAuth.instance.currentUser?.displayName ?? 'You';
 
     return Scaffold(
@@ -65,98 +61,49 @@ class _StudentMyReportsScreenState extends State<StudentMyReportsScreen> {
               const SizedBox(height: 10),
 
               Expanded(
-                child: _buildReportsContent(
-                  incidentProvider,
-                  incidents,
-                  userName,
+                child: IncidentListView(
+                  incidents: incidentProvider.myIncidents,
+                  isLoading: incidentProvider.isLoadingMyIncidents,
+                  hasError: incidentProvider.errorMessage != null,
+                  onRetry: () {
+                    final user = FirebaseAuth.instance.currentUser;
+                    if (user != null) {
+                      incidentProvider.listenToMyIncidents(user.uid);
+                    }
+                  },
+                  reporterNameFor: (_) => userName,
+                  emptyState: const Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.assignment_outlined,
+                          size: 52,
+                          color: AppColors.textSecondary,
+                        ),
+                        SizedBox(height: 12),
+                        Text(
+                          'No reports yet',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(height: 6),
+                        Text(
+                          'Your submitted incidents will appear here.',
+                          style: TextStyle(color: AppColors.textSecondary),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildReportsContent(
-    IncidentProvider provider,
-    List<Incident> incidents,
-    String userName,
-  ) {
-    if (provider.isLoadingMyIncidents) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (provider.errorMessage != null) {
-      return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.error_outline, size: 40, color: AppColors.error),
-
-            const SizedBox(height: 12),
-            const Text('Could not load your reports.'),
-            const SizedBox(height: 12),
-            TextButton(
-              onPressed: () {
-                final user = FirebaseAuth.instance.currentUser;
-
-                if (user != null) {
-                  provider.listenToMyIncidents(user.uid);
-                }
-              },
-              child: const Text('Try again'),
-            ),
-          ],
-        ),
-      );
-    }
-
-    if (incidents.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(
-              Icons.assignment_outlined,
-              size: 52,
-              color: AppColors.textSecondary,
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'No reports yet',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 6),
-            const Text(
-              'Your submitted incidents will appear here.',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: AppColors.textSecondary),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return ListView.separated(
-      itemCount: incidents.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 14),
-      itemBuilder: (context, index) {
-        final incident = incidents[index];
-
-        return IncidentCard(
-          incident: incident,
-          reporterName: userName,
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => IncidentDetailsScreen(incidentId: incident.id),
-              ),
-            );
-          },
-        );
-      },
     );
   }
 }
