@@ -1,4 +1,3 @@
-import 'package:campus_reporting_app/core/theme/app_colors.dart';
 import 'package:campus_reporting_app/models/incident.dart';
 import 'package:campus_reporting_app/widgets/status_badge.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +16,11 @@ class IncidentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return Card(
       elevation: 1,
-      color: AppColors.card,
+      color: colorScheme.surface,
       margin: const EdgeInsets.only(bottom: 12),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
@@ -38,13 +39,10 @@ class IncidentCard extends StatelessWidget {
                         width: 76,
                         height: 76,
                         fit: BoxFit.cover,
-
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) return child;
-
                           return _imagePlaceholder();
                         },
-
                         errorBuilder: (_, _, _) => _imagePlaceholder(),
                       )
                     : _imagePlaceholder(),
@@ -60,19 +58,20 @@ class IncidentCard extends StatelessWidget {
                       incident.title,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
+                        color: colorScheme.onSurface,
                       ),
                     ),
 
                     const SizedBox(height: 5),
+
                     Text(
                       reporterName,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 11,
-                        color: AppColors.textSecondary,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
 
@@ -80,10 +79,10 @@ class IncidentCard extends StatelessWidget {
 
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.location_on_outlined,
                           size: 13,
-                          color: AppColors.textSecondary,
+                          color: colorScheme.onSurfaceVariant,
                         ),
                         const SizedBox(width: 3),
                         Expanded(
@@ -91,9 +90,9 @@ class IncidentCard extends StatelessWidget {
                             incident.location,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11,
-                              color: AppColors.textSecondary,
+                              color: colorScheme.onSurfaceVariant,
                             ),
                           ),
                         ),
@@ -101,6 +100,7 @@ class IncidentCard extends StatelessWidget {
                     ),
 
                     const SizedBox(height: 7),
+
                     StatusBadge(status: incident.status),
                   ],
                 ),
@@ -108,10 +108,10 @@ class IncidentCard extends StatelessWidget {
 
               const SizedBox(width: 5),
 
-              const Icon(
+              Icon(
                 Icons.arrow_forward_ios,
                 size: 14,
-                color: AppColors.textSecondary,
+                color: colorScheme.onSurfaceVariant,
               ),
             ],
           ),

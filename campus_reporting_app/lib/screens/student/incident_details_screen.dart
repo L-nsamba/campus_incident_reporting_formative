@@ -116,7 +116,7 @@ class _IncidentDetailsScreenState extends State<IncidentDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: FutureBuilder<Incident?>(
           future: _incidentFuture,
@@ -190,10 +190,10 @@ class _IncidentDetailsScreenState extends State<IncidentDetailsScreen> {
 
                   Text(
                     incident.title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
 
@@ -254,10 +254,10 @@ class _IncidentDetailsScreenState extends State<IncidentDetailsScreen> {
                     incident.description.isNotEmpty
                         ? incident.description
                         : 'No description provided.',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 15,
                       height: 1.5,
-                      color: AppColors.textPrimary,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
 

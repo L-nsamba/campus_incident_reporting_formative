@@ -89,7 +89,7 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
     final latestReports = incidents.take(3).toList();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: provider.isLoadingIncidents
             ? const Center(child: CircularProgressIndicator())
@@ -111,12 +111,12 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Staff Dashboard',
                       style: TextStyle(
                         fontSize: 19,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     const SizedBox(height: 6),
@@ -167,12 +167,12 @@ class _StaffDashboardScreenState extends State<StaffDashboardScreen> {
                     const SizedBox(height: 22),
 
                     // Latest reports
-                    const Text(
+                    Text(
                       'Latest Reports',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     const SizedBox(height: 12),

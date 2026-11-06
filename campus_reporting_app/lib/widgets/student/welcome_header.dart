@@ -9,7 +9,10 @@ class WelcomeHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       'Hello, $studentName',
-      style: AppTextStyles.heading.copyWith(fontWeight: FontWeight.bold),
+      style: AppTextStyles.heading.copyWith(
+        fontWeight: FontWeight.bold,
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
     );
   }
 }

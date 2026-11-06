@@ -19,6 +19,7 @@ class CategoryFilterList extends StatelessWidget {
 
       children: [
         _buildCategoryChip(
+          context: context,
           label: 'All',
           isSelected: selectedCategory == null,
           onTap: () => onCategorySelected(null),
@@ -26,6 +27,7 @@ class CategoryFilterList extends StatelessWidget {
 
         ...IncidentCategoryEnum.values.map((category) {
           return _buildCategoryChip(
+            context: context,
             label: category.label,
             isSelected: selectedCategory == category,
             onTap: () => onCategorySelected(category),
@@ -36,6 +38,7 @@ class CategoryFilterList extends StatelessWidget {
   }
 
   Widget _buildCategoryChip({
+    required BuildContext context,
     required String label,
     required bool isSelected,
     required VoidCallback onTap,
@@ -44,17 +47,11 @@ class CategoryFilterList extends StatelessWidget {
       label: Text(label),
       selected: isSelected,
       onSelected: (_) => onTap(),
-      showCheckmark: false,
-      selectedColor: AppColors.primary,
-      backgroundColor: AppColors.surface,
-      side: BorderSide.none,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       labelStyle: TextStyle(
-        color: isSelected ? Colors.white : AppColors.textSecondary,
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
+        color: isSelected
+            ? Theme.of(context).colorScheme.surface
+            : AppColors.textSecondary,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 5),
     );
   }
 }

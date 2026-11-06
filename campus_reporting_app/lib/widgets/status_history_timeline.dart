@@ -41,7 +41,11 @@ class StatusHistoryTimeline extends StatelessWidget {
                 ),
 
                 if (!isLast)
-                  Container(width: 2, height: 65, color: AppColors.border),
+                  Container(
+                    width: 2,
+                    height: 65,
+                    color: Theme.of(context).dividerColor,
+                  ),
               ],
             ),
 
@@ -54,10 +58,10 @@ class StatusHistoryTimeline extends StatelessWidget {
                   children: [
                     Text(
                       entry.status.label,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     const SizedBox(height: 4),

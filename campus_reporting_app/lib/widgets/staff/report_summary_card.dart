@@ -23,8 +23,8 @@ class ReportSummaryCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.surface,
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
@@ -34,8 +34,8 @@ class ReportSummaryCard extends StatelessWidget {
 
           Text(
             count.toString().padLeft(2, '0'),
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.surface,
               fontSize: 22,
               fontWeight: FontWeight.bold,
             ),

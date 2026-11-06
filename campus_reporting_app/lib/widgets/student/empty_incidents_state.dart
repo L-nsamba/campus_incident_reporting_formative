@@ -29,12 +29,12 @@ class EmptyIncidentsState extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            const Text(
+            Text(
               'No reports yet',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
 

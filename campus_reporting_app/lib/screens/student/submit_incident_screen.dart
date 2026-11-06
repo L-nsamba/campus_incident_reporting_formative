@@ -65,7 +65,7 @@ class _SubmitIncidentScreenState extends State<SubmitIncidentScreen> {
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(9)),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(9),
-        borderSide: const BorderSide(color: AppColors.border),
+        borderSide: BorderSide(color: Theme.of(context).dividerColor),
       ),
     );
   }

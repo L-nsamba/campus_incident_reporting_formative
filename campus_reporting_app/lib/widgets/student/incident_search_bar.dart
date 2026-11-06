@@ -1,4 +1,3 @@
-import 'package:campus_reporting_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class IncidentSearchBar extends StatelessWidget {
@@ -7,13 +6,17 @@ class IncidentSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return TextField(
       onChanged: onChanged,
+      style: TextStyle(color: colorScheme.onSurface),
       decoration: InputDecoration(
         hintText: 'Search for reports',
-        prefixIcon: const Icon(Icons.search, color: AppColors.textHint),
+        hintStyle: TextStyle(color: colorScheme.onSurfaceVariant),
+        prefixIcon: Icon(Icons.search, color: colorScheme.onSurfaceVariant),
         filled: true,
-        fillColor: AppColors.surface,
+        fillColor: colorScheme.surface,
         contentPadding: const EdgeInsets.symmetric(vertical: 14),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
@@ -25,7 +28,7 @@ class IncidentSearchBar extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: AppColors.primary, width: 1),
+          borderSide: BorderSide(color: colorScheme.primary, width: 1),
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:campus_reporting_app/app/app.dart';
 import 'package:campus_reporting_app/providers/auth_provider.dart';
 import 'package:campus_reporting_app/providers/incident_provider.dart';
+import 'package:campus_reporting_app/providers/theme_provider.dart';
 import 'package:campus_reporting_app/repositories/incident_repository.dart';
 import 'package:campus_reporting_app/repositories/user_repository.dart';
 import 'package:campus_reporting_app/services/auth_service.dart';
@@ -37,6 +38,9 @@ Future<void> main() async {
 
         // Cloudinary service
         Provider(create: (_) => CloudinaryService()),
+
+        // Theme Provider
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
       child: const CampusIncidentApp(),
     ),

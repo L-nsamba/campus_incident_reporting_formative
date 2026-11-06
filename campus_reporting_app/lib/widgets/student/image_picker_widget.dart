@@ -72,12 +72,12 @@ class ImagePickerWidgetState extends State<ImagePickerWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Attach Image (Optional)',
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 10),
@@ -94,23 +94,23 @@ class ImagePickerWidgetState extends State<ImagePickerWidget> {
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppColors.border),
               ),
-              child: const Column(
+              child: Column(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.cloud_upload_outlined,
                     size: 32,
                     color: AppColors.textSecondary,
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     'Tap to upload an image',
                     style: TextStyle(
-                      color: AppColors.textPrimary,
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  SizedBox(height: 4),
-                  Text(
+                  const SizedBox(height: 4),
+                  const Text(
                     'JPG, PNG or WEBP',
                     style: TextStyle(
                       fontSize: 12,
@@ -137,7 +137,9 @@ class ImagePickerWidgetState extends State<ImagePickerWidget> {
                   right: 8,
                   child: IconButton(
                     onPressed: _removeImage,
-                    style: IconButton.styleFrom(backgroundColor: Colors.white),
+                    style: IconButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.surface,
+                    ),
                     icon: const Icon(Icons.close, color: AppColors.error),
                   ),
                 ),

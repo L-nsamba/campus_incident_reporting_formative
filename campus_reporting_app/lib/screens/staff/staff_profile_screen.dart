@@ -1,4 +1,5 @@
 import 'package:campus_reporting_app/providers/auth_provider.dart';
+import 'package:campus_reporting_app/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' show ReadContext;
 
@@ -19,7 +20,12 @@ class _StaffProfileScreenState extends State<StaffProfileScreen> {
           onPressed: () async {
             await context.read<AuthProvider>().logout();
           },
-          child: const Text('Log Out'),
+          child: ElevatedButton(
+            onPressed: () {
+              context.read<ThemeProvider>().toggleTheme();
+            },
+            child: const Text('Toggle Theme'),
+          ),
         ),
       ),
     );

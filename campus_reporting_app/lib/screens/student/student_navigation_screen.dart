@@ -43,7 +43,7 @@ class _StudentNavigationScreenState extends State<StudentNavigationScreen> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         selectedItemColor: Theme.of(context).colorScheme.primary,
-        unselectedItemColor: Colors.black,
+        unselectedItemColor: Theme.of(context).colorScheme.onSurface,
         showUnselectedLabels: true,
         onTap: (index) {
           setState(() {
