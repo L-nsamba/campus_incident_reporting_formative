@@ -50,6 +50,46 @@ class IncidentRepository {
     }
   }
 
+  // Updating an incident's status and recording its history
+  Future<void> updateIncidentStatus({
+    required String incidentId,
+    required IncidentStatusEnum newStatus,
+    required String updatedBy,
+    String? note,
+  }) async {
+    try {
+      final incidentRef = _incidentsCollection.doc(incidentId);
+
+      final historyRef = incidentRef.collection('statusHistory').doc();
+
+      final batch = _firestore.batch();
+
+      // Updating the incidents current status
+      batch.update(incidentRef, {
+        'status': newStatus.name,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+
+      // Record the status changes
+      final historyEntry = StatusHistory(
+        entryId: historyRef.id,
+        status: newStatus,
+        updatedBy: updatedBy,
+        note: note,
+        createdAt: DateTime.now(),
+      );
+
+      batch.set(historyRef, {
+        ...historyEntry.toMap(),
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      await batch.commit();
+    } catch (e) {
+      throw Exception('Failed to update incident status: $e');
+    }
+  }
+
   // Retrieving all incidents for the dashboard home feed
   Stream<List<Incident>> getAllIncidents() {
     return _incidentsCollection

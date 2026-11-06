@@ -13,4 +13,21 @@ extension StatusLabelX on IncidentStatusEnum {
         return 'Resolved';
     }
   }
+
+  // Statuses a staff member can move this report to next.
+  List<IncidentStatusEnum> get nextStatuses {
+    switch (this) {
+      case IncidentStatusEnum.submitted:
+        return [IncidentStatusEnum.inReview];
+
+      case IncidentStatusEnum.inReview:
+        return [IncidentStatusEnum.inProgress];
+
+      case IncidentStatusEnum.inProgress:
+        return [IncidentStatusEnum.resolved];
+
+      case IncidentStatusEnum.resolved:
+        return [];
+    }
+  }
 }

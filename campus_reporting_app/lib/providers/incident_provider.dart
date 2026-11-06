@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:campus_reporting_app/enum/incident_status_enum.dart';
 import 'package:campus_reporting_app/models/incident.dart';
 import 'package:campus_reporting_app/models/status_history.dart';
 import 'package:campus_reporting_app/repositories/incident_repository.dart';
@@ -42,6 +43,8 @@ class IncidentProvider extends ChangeNotifier {
   bool get isLoadingIncidents => _isLoadingIncidents;
   bool get isLoadingMyIncidents => _isLoadingMyIncidents;
   bool get isSubmitting => _isSubmitting;
+  bool _isUpdatingStatus = false;
+  bool get isUpdatingStatus => _isUpdatingStatus;
 
   String? get errorMessage => _errorMessage;
 
@@ -157,5 +160,32 @@ class IncidentProvider extends ChangeNotifier {
     _errorMessage = null;
 
     listenToAllIncidents();
+  }
+
+  // Updating Incident Status
+  Future<void> updateIncidentStatus({
+    required String incidentId,
+    required IncidentStatusEnum newStatus,
+    required String updatedBy,
+    String? note,
+  }) async {
+    _isUpdatingStatus = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      await _incidentRepository.updateIncidentStatus(
+        incidentId: incidentId,
+        newStatus: newStatus,
+        updatedBy: updatedBy,
+        note: note,
+      );
+    } catch (e) {
+      _errorMessage = e.toString();
+      notifyListeners();
+      rethrow;
+    } finally {
+      _isUpdatingStatus = false;
+      notifyListeners();
+    }
   }
 }
