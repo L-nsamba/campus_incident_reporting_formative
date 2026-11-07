@@ -11,7 +11,7 @@ class IncidentListView extends StatelessWidget {
   final VoidCallback onRetry;
   final Widget emptyState;
   final String Function(Incident incident) reporterNameFor;
-  final bool embedded; 
+  final bool embedded;
 
   const IncidentListView({
     super.key,

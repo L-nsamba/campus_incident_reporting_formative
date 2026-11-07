@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'app_colors.dart';
 
 class AppTextStyles {
@@ -6,34 +7,5 @@ class AppTextStyles {
     fontSize: 24,
     fontWeight: FontWeight.bold,
     color: AppColors.textPrimary,
-  );
-
-  static const TextStyle subheading = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w600,
-    color: AppColors.textPrimary,
-  );
-
-  static const TextStyle body = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.normal,
-    color: AppColors.textPrimary,
-  );
-
-  static const TextStyle bodySecondary = TextStyle(
-    fontSize: 13,
-    color: AppColors.textSecondary,
-  );
-
-  static const TextStyle label = TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-    color: AppColors.textPrimary,
-  );
-
-  static const TextStyle button = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w600,
-    color: Colors.white,
   );
 }
