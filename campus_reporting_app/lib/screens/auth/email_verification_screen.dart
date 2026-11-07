@@ -1,6 +1,6 @@
 import 'package:campus_reporting_app/core/theme/app_colors.dart';
 import 'package:campus_reporting_app/providers/auth_provider.dart';
-import 'package:campus_reporting_app/widgets/primary_button.dart';
+import 'package:campus_reporting_app/widgets/shared/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

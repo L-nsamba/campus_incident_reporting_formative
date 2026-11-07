@@ -2,7 +2,7 @@ import 'package:campus_reporting_app/core/theme/app_colors.dart';
 import 'package:campus_reporting_app/enum/incident_status_enum.dart';
 import 'package:campus_reporting_app/models/incident.dart';
 import 'package:campus_reporting_app/providers/incident_provider.dart';
-import 'package:campus_reporting_app/widgets/build_report.dart';
+import 'package:campus_reporting_app/widgets/shared/build_report.dart';
 import 'package:campus_reporting_app/widgets/staff/daily_reports_chart.dart';
 import 'package:campus_reporting_app/widgets/staff/report_summary_card.dart';
 import 'package:flutter/material.dart';

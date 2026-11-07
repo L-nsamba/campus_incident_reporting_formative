@@ -1,12 +1,12 @@
 import 'package:campus_reporting_app/enum/incident_category_enum.dart';
 import 'package:campus_reporting_app/providers/auth_provider.dart';
 import 'package:campus_reporting_app/providers/incident_provider.dart';
-import 'package:campus_reporting_app/widgets/student/category_filter_list.dart';
-import 'package:campus_reporting_app/widgets/student/empty_incidents_state.dart';
-import 'package:campus_reporting_app/widgets/student/incident_search_bar.dart';
+import 'package:campus_reporting_app/widgets/shared/category_filter_list.dart';
+import 'package:campus_reporting_app/widgets/shared/empty_incidents_state.dart';
+import 'package:campus_reporting_app/widgets/shared/incident_search_bar.dart';
 import 'package:campus_reporting_app/widgets/student/report_banner.dart';
 import 'package:campus_reporting_app/widgets/student/report_feed.dart';
-import 'package:campus_reporting_app/widgets/student/welcome_header.dart';
+import 'package:campus_reporting_app/widgets/shared/welcome_header.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

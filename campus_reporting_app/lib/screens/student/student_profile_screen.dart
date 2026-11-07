@@ -1,27 +1,11 @@
-import 'package:campus_reporting_app/providers/auth_provider.dart';
+import 'package:campus_reporting_app/widgets/shared/user_profile_view.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class StudentProfileScreen extends StatefulWidget {
-  const StudentProfileScreen({super.key});
+class StudentProfileScreen extends StatelessWidget {
+  const new({super.key});
 
-  @override
-  State<StudentProfileScreen> createState() => _StudentProfileScreenState();
-}
-
-class _StudentProfileScreenState extends State<StudentProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            await context.read<AuthProvider>().logout();
-          },
-          child: const Text('Log Out'),
-        ),
-      ),
-    );
+    return const UserProfileView();
   }
 }

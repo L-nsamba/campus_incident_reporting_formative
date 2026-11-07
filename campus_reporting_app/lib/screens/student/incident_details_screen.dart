@@ -6,9 +6,9 @@ import 'package:campus_reporting_app/models/status_history.dart';
 import 'package:campus_reporting_app/providers/auth_provider.dart';
 import 'package:campus_reporting_app/providers/incident_provider.dart';
 import 'package:campus_reporting_app/repositories/user_repository.dart';
+import 'package:campus_reporting_app/widgets/shared/status_badge.dart';
+import 'package:campus_reporting_app/widgets/shared/status_history_timeline.dart';
 import 'package:campus_reporting_app/widgets/staff/build_staff_details.dart';
-import 'package:campus_reporting_app/widgets/status_badge.dart';
-import 'package:campus_reporting_app/widgets/status_history_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
