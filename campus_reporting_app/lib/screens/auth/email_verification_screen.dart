@@ -85,6 +85,17 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     }
   }
 
+  // Signout
+  Future<void> _signOut() async {
+    final authProvider = context.read<AuthProvider>();
+
+    await authProvider.logout();
+
+    if (!mounted) return;
+
+    Navigator.popUntil(context, (route) => route.isFirst);
+  }
+
   @override
   Widget build(BuildContext context) {
     final email =
@@ -191,6 +202,13 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Text('Resend verification email'),
+              ),
+              const SizedBox(height: 12),
+
+              TextButton.icon(
+                onPressed: _signOut,
+                icon: const Icon(Icons.logout),
+                label: const Text('Sign out and use another account'),
               ),
 
               const SizedBox(height: 24),
