@@ -4,6 +4,12 @@ reporting, monitoring, and managing campus incidents.The application allows
 ALU students to submit campus-related issues and track their progress, while
 authorized staff can review the reports and update their resolution status
 
+## Deliverables 
+- [Demo Video](https://www.youtube.com/watch?v=NNqLf0ZZikA)
+- [Architecture Diagram](https://drive.google.com/file/d/1fj8XnOmfxCnDX8ubzymQyuRIv3inVx2G/view?usp=sharing)
+- [Entity Relationship Diagram](https://drive.google.com/file/d/1emuPZYwG6YVG9-V1RIO3wzmyT2n5OVM1/view?usp=sharing)
+- [Figma Board](https://www.figma.com/design/nJUz4oafr3le4BSfclkuyN/campus-incident-reporting?node-id=0-1&t=ZUAaUngkp6EEourw-1)
+
 ## Technology Stack
 | Technology | Purpose |
 |---|---|
