@@ -1,0 +1,124 @@
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Authentication helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Read the user's role from their Firestore profile
+    function isStaff() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'staff';
+    }
+
+    // Check permitted incident status progression
+    function validNextStatus(oldStatus, newStatus) {
+      return
+        (oldStatus == 'submitted' && newStatus == 'inReview') ||
+        (oldStatus == 'inReview' && newStatus == 'inProgress') ||
+        (oldStatus == 'inProgress' && newStatus == 'resolved');
+    }
+
+    // User profiles
+    match /users/{userId} {
+
+      allow read: if isOwner(userId) || isStaff();
+
+      // Public registration can only create student profiles.
+      // Staff profiles are provisioned separately.
+      allow create: if isOwner(userId)
+        && request.resource.data.role == 'student'
+        && request.resource.data.keys().hasAll([
+          'name', 'email', 'role', 'createdAt', 'updatedAt'
+        ]);
+
+      // No client-side role changes or profile modifications.
+      allow update, delete: if false;
+    }
+
+    // Incident reports
+    match /incidents/{incidentId} {
+
+      allow read: if isSignedIn();
+
+      // Students can submit reports under their own UID.
+      allow create: if isSignedIn()
+        && request.resource.data.reporterId == request.auth.uid
+        && request.resource.data.status == 'submitted'
+        && request.resource.data.keys().hasAll([
+          'reporterId',
+          'title',
+          'description',
+          'category',
+          'location',
+          'status',
+          'createdAt',
+          'updatedAt'
+        ]);
+
+      // Only staff can advance incident statuses.
+      allow update: if isStaff()
+        && request.resource.data.diff(resource.data)
+          .affectedKeys().hasOnly(['status', 'updatedAt'])
+        && validNextStatus(
+          resource.data.status,
+          request.resource.data.status
+        );
+
+      allow delete: if false;
+
+      // Incident status history
+      match /statusHistory/{entryId} {
+
+        allow read: if isSignedIn();
+
+        // Initial history entry created with a student report.
+        // Subsequent entries must correspond to a valid staff update.
+        allow create: if isSignedIn()
+          && request.resource.data.updatedBy == request.auth.uid
+          && request.resource.data.keys().hasAll([
+            'status', 'updatedBy', 'note', 'createdAt'
+          ])
+          && (
+            (
+              !exists(/databases/$(database)/documents/incidents/$(incidentId))
+              && getAfter(
+                /databases/$(database)/documents/incidents/$(incidentId)
+              ).data.reporterId == request.auth.uid
+              && getAfter(
+                /databases/$(database)/documents/incidents/$(incidentId)
+              ).data.status == 'submitted'
+              && request.resource.data.status == 'submitted'
+            )
+            ||
+            (
+              isStaff()
+              && validNextStatus(
+                get(
+                  /databases/$(database)/documents/incidents/$(incidentId)
+                ).data.status,
+                getAfter(
+                  /databases/$(database)/documents/incidents/$(incidentId)
+                ).data.status
+              )
+              && request.resource.data.status ==
+                getAfter(
+                  /databases/$(database)/documents/incidents/$(incidentId)
+                ).data.status
+            )
+          );
+
+        allow update, delete: if false;
+      }
+    }
+  }
+}

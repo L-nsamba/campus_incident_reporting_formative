@@ -46,3 +46,14 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Node.js
+security-tests/node_modules/
+security-tests/coverage/
+security-tests/.nyc_output/
+
+# Environment files
+.env
+.env.*
+
+**/node_modules/

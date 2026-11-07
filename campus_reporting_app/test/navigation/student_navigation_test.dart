@@ -1,7 +1,7 @@
+import 'package:campus_reporting_app/screens/student/student_navigation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../lib/screens/student/student_navigation_screen.dart';
 
 void main() {
   group('StudentNavigationScreen Widget Tests', () {
