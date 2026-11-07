@@ -9,6 +9,7 @@ authorized staff can review the reports and update their resolution status
 - [Architecture Diagram](https://drive.google.com/file/d/1fj8XnOmfxCnDX8ubzymQyuRIv3inVx2G/view?usp=sharing)
 - [Entity Relationship Diagram](https://drive.google.com/file/d/1emuPZYwG6YVG9-V1RIO3wzmyT2n5OVM1/view?usp=sharing)
 - [Figma Board](https://www.figma.com/design/nJUz4oafr3le4BSfclkuyN/campus-incident-reporting?node-id=0-1&t=ZUAaUngkp6EEourw-1)
+- [Technical Report](https://docs.google.com/document/d/1ZiBDCOT0ZBD8L8hmxRuuI3Z-r3NYmbzdAj5gEIi-JE8/edit?tab=t.0)
 
 ## Technology Stack
 | Technology | Purpose |
