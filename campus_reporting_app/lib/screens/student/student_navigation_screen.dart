@@ -30,7 +30,7 @@ class _StudentNavigationScreenState extends State<StudentNavigationScreen> {
   }
 
   late final List<Widget> _screens =
-  //  Introducing the widget.testScreens for navigation test for student pov
+      //  Introducing the widget.testScreens for navigation test for student pov
       widget.testScreens ??
       [
         StudentHomeScreen(onSubmitPressed: _openSubmitTab),
