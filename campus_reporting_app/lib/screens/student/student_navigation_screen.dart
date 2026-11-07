@@ -5,7 +5,9 @@ import 'package:campus_reporting_app/screens/student/submit_incident_screen.dart
 import 'package:flutter/material.dart';
 
 class StudentNavigationScreen extends StatefulWidget {
-  const StudentNavigationScreen({super.key});
+  final List<Widget>? testScreens;
+
+  const StudentNavigationScreen({super.key, this.testScreens});
 
   @override
   State<StudentNavigationScreen> createState() =>
@@ -27,12 +29,15 @@ class _StudentNavigationScreenState extends State<StudentNavigationScreen> {
     });
   }
 
-  late final List<Widget> _screens = [
-    StudentHomeScreen(onSubmitPressed: _openSubmitTab),
-    SubmitIncidentScreen(onIncidentSubmitted: _onIncidentSubmitted),
-    const StudentMyReportsScreen(),
-    const StudentProfileScreen(),
-  ];
+  late final List<Widget> _screens =
+  //  Introducing the widget.testScreens for navigation test for student pov
+      widget.testScreens ??
+      [
+        StudentHomeScreen(onSubmitPressed: _openSubmitTab),
+        SubmitIncidentScreen(onIncidentSubmitted: _onIncidentSubmitted),
+        const StudentMyReportsScreen(),
+        const StudentProfileScreen(),
+      ];
 
   @override
   Widget build(BuildContext context) {

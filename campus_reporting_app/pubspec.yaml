@@ -36,6 +36,7 @@ dependencies:
   fl_chart: ^1.3.0
   flutter:
     sdk: flutter
+  fluttertest: ^0.0.1
   http: ^1.6.0
   image_picker: ^1.2.4
   provider: ^6.1.5+1
