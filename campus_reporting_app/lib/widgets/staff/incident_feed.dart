@@ -2,7 +2,7 @@ import 'package:campus_reporting_app/enum/incident_category_enum.dart';
 import 'package:campus_reporting_app/providers/incident_provider.dart';
 import 'package:campus_reporting_app/screens/student/incident_details_screen.dart';
 import 'package:campus_reporting_app/utils/incident_filter.dart';
-import 'package:campus_reporting_app/widgets/incident_card.dart';
+import 'package:campus_reporting_app/widgets/shared/incident_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' show WatchContext;
 

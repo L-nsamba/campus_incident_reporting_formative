@@ -2,7 +2,7 @@ import 'package:campus_reporting_app/core/theme/app_colors.dart';
 import 'package:campus_reporting_app/enum/incident_status_enum.dart';
 import 'package:campus_reporting_app/models/incident.dart';
 import 'package:campus_reporting_app/providers/incident_provider.dart';
-import 'package:campus_reporting_app/widgets/status_badge.dart';
+import 'package:campus_reporting_app/widgets/shared/status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' show WatchContext;
 

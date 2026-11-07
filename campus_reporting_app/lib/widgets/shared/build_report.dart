@@ -1,7 +1,7 @@
 import 'package:campus_reporting_app/core/theme/app_colors.dart';
 import 'package:campus_reporting_app/models/incident.dart';
 import 'package:campus_reporting_app/screens/student/incident_details_screen.dart';
-import 'package:campus_reporting_app/widgets/incident_card.dart';
+import 'package:campus_reporting_app/widgets/shared/incident_card.dart';
 import 'package:flutter/material.dart';
 
 class IncidentListView extends StatelessWidget {

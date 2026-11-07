@@ -1,5 +1,5 @@
 import 'package:campus_reporting_app/models/incident.dart';
-import 'package:campus_reporting_app/widgets/status_badge.dart';
+import 'package:campus_reporting_app/widgets/shared/status_badge.dart';
 import 'package:flutter/material.dart';
 
 class IncidentCard extends StatelessWidget {

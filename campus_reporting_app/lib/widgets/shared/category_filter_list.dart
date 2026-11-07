@@ -47,6 +47,8 @@ class CategoryFilterList extends StatelessWidget {
       label: Text(label),
       selected: isSelected,
       onSelected: (_) => onTap(),
+      selectedColor: AppColors.primary,
+      backgroundColor: AppColors.surface,
       labelStyle: TextStyle(
         color: isSelected
             ? Theme.of(context).colorScheme.surface
